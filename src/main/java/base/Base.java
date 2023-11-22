@@ -45,6 +45,21 @@ public class Base {
         initializeReport();
     }
 
+    @AfterMethod
+    public void tearDown(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
+            // Capture a screenshot if the test fails
+            captureScreenshot(result.getName());
+            test = extent.createTest(result.getName(), "Test Fail");
+        } else {
+            test = extent.createTest(result.getName(), "Test Pass");
+        }
+        // Close the browser
+        driver.quit();
+        // Generate the report
+        extent.flush();
+    }
+
     private void setupBrowser(String browserName) {
         switch (browserName) {
             case "chrome":
@@ -64,21 +79,6 @@ public class Base {
                 logger.info(browserName + " is not a valid browser");
                 break;
         }
-    }
-
-    @AfterMethod
-    public void tearDown(ITestResult result) {
-        if (result.getStatus() == ITestResult.FAILURE) {
-            // Capture a screenshot if the test fails
-            captureScreenshot(result.getName());
-            test = extent.createTest(result.getName(), "Test Fail");
-        } else {
-            test = extent.createTest(result.getName(), "Test Pass");
-        }
-        // Close the browser
-        driver.quit();
-        // Generate the report
-        extent.flush();
     }
 
     private void captureScreenshot(String testName) {
