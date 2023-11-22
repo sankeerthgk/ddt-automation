@@ -24,7 +24,7 @@ public class Actions extends BasePage {
         int count = 0;
         for (int i=0; i< totalPages; i++) {
             // Perform actions on the current page
-            if (checkAllProductsContainsText(productElement, searchText)) {
+            if (checkAllProductsContainsText(productElement, searchText.toLowerCase())) {
                 count++;
                 logger.info("Verified that all titles have '" + searchText + "' on page " + count);
             }
@@ -39,9 +39,11 @@ public class Actions extends BasePage {
         int counter=0;
         // Check each element's title for the specified text
         for (WebElement element : elements) {
-            String title = element.getText();
+            String title = element.getText().toLowerCase();
             if (title != null && title.contains(searchText)) {
                 counter++;
+            } else {
+                logger.info(searchText + " not found in product " + title);
             }
         }
         return counter==elements.size();
