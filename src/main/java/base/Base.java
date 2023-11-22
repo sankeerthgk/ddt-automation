@@ -57,6 +57,7 @@ public class Base {
                 logger.info(browserName + " is not a valid browser");
                 break;
         }
+        driver.get(properties.getProperty("url"));
         driver.manage().window().maximize();
         //Setting up report
         initializeReport();
