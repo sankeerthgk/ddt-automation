@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TestClass extends Base {
 
-    private Logger logger = LoggerFactory.getLogger(TestClass.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(TestClass.class.getName());
 
     @Test(dataProvider = "dataProvider")
     public void testSearchAddAndRemoveProduct(String searchItem, String titleLookup) {
@@ -34,8 +34,8 @@ public class TestClass extends Base {
         Assert.assertTrue(searchResultsPage.isSearchResultsDisplayed(), "Search results are not displayed");
 
         //3. Check the search result ensuring every product has the word 'Table' in its title.
-        Assert.assertTrue(searchResultsPage.checkIfAllProductsContainsTitle(titleLookup), "Not all products have Table in their title");
-        logger.info("All products have the word Table in the title");
+        Assert.assertTrue(searchResultsPage.checkIfAllProductsContainsTitle(titleLookup), "Not all products have " + titleLookup + " in their title");
+        logger.info("All products have the word " + titleLookup + " in the title");
 
         //4. Add the last of found item on last page to Cart.
         searchResultsPage.addLastProductOnPageToCart();

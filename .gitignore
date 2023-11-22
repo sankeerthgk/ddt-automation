@@ -37,4 +37,6 @@ target/
 *.iml
 *.ipr
 .idea
+screenshots
+Reports
 

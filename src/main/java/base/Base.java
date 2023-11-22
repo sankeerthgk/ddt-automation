@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
-import pages.BasePage;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +25,7 @@ import java.util.Properties;
 
 public class Base {
 
-    private Logger logger = LoggerFactory.getLogger(Base.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(Base.class.getName());
 
     public WebDriver driver;
     public Properties properties;
@@ -39,24 +38,8 @@ public class Base {
         properties = new Config().loadConfig();
         String browserName = properties.getProperty("browser");
         //Select browser based on properties
-        switch (browserName) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-                logger.info("Selected browser: " + browserName);
-                break;
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
-            case "ie":
-                WebDriverManager.iedriver().setup();
-                driver = new InternetExplorerDriver();
-                break;
-            default:
-                logger.info(browserName + " is not a valid browser");
-                break;
-        }
+        setupBrowser(browserName);
+        driver.get(properties.getProperty("url"));
         driver.manage().window().maximize();
         //Setting up report
         initializeReport();
@@ -77,6 +60,27 @@ public class Base {
         extent.flush();
     }
 
+    private void setupBrowser(String browserName) {
+        switch (browserName) {
+            case "chrome":
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                logger.info("Selected browser: " + browserName);
+                break;
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "ie":
+                WebDriverManager.iedriver().setup();
+                driver = new InternetExplorerDriver();
+                break;
+            default:
+                logger.info(browserName + " is not a valid browser");
+                break;
+        }
+    }
+
     private void captureScreenshot(String testName) {
         // Convert WebDriver object to TakesScreenshot
         TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
@@ -85,7 +89,7 @@ public class Base {
         File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
 
         // Define the destination file path
-        String destFilePath = "screenshots/" + testName + ".png";
+        String destFilePath = "Screenshots/" + testName + ".png";
 
         try {
             // Copy the screenshot file to the destination

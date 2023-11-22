@@ -3,12 +3,15 @@ package actions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pages.BasePage;
 
 import java.util.List;
 
 public class Actions extends BasePage {
 
+    private final Logger logger = LoggerFactory.getLogger(Actions.class.getName());
     public Actions(WebDriver driver) {
         super(driver);
     }
@@ -17,11 +20,15 @@ public class Actions extends BasePage {
         List<WebElement> pageLinks = driver.findElements(pagesElement);
         int totalPages= Integer.parseInt(pageLinks.get(pageLinks.size()-2).getText())-1;
         // Traverse through each page
+        logger.info("Total number of pages to traverse: " + totalPages);
         int count = 0;
+        String lookupWord = searchText.toLowerCase();
         for (int i=0; i< totalPages; i++) {
             // Perform actions on the current page
-            if (checkAllProductsContainsText(productElement, searchText))
+            if (checkAllProductsContainsText(productElement, lookupWord)) {
                 count++;
+                logger.info("Verified that all titles have '" + searchText + "' on page " + count);
+            }
             // Click on the next page link
             scrollToElementAndClick(nextPageButton);
         }
@@ -32,10 +39,14 @@ public class Actions extends BasePage {
         List<WebElement> elements = driver.findElements(searchElement);
         int counter=0;
         // Check each element's title for the specified text
-        for (WebElement element : elements) {
-            String title = element.getText();
-            if (title != null && title.contains(searchText)) {
-                counter++;
+        if(!elements.isEmpty()) {
+            for (WebElement element : elements) {
+                String title = element.getText().toLowerCase();
+                if (title.contains(searchText)) {
+                    counter++;
+                } else {
+                    logger.info(searchText + " not found in product " + title);
+                }
             }
         }
         return counter==elements.size();
