@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 public class SearchResultsPage extends BasePage {
     private String URL = "/search";
     public Actions actions = new Actions(driver);
-    private By search_results = By.cssSelector(".search__wrap");
+    private By searchResults = By.cssSelector(".search__wrap");
     private By itemDescription = By.cssSelector("[data-testid='itemDescription']");
     private By dropdown = By.cssSelector("[data-testid='itemAddCartGrouping']");
     private By lastPage = By.cssSelector("#paging [aria-label*='last page']");
@@ -23,7 +23,7 @@ public class SearchResultsPage extends BasePage {
     }
 
     public boolean isSearchResultsDisplayed() {
-        return driver.findElement(search_results).isDisplayed();
+        return driver.findElement(searchResults).isDisplayed();
     }
 
     public boolean checkIfAllProductsContainsTitle(String title) {
