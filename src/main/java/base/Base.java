@@ -90,7 +90,7 @@ public class Base {
         try {
             // Copy the screenshot file to the destination
             FileUtils.copyFile(screenshot, new File(destFilePath));
-            System.out.println("Screenshot captured: " + destFilePath);
+            logger.info("Screenshot captured: " + destFilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
