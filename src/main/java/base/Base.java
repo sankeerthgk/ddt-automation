@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
-import pages.BasePage;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +85,7 @@ public class Base {
         File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
 
         // Define the destination file path
-        String destFilePath = "screenshots/" + testName + ".png";
+        String destFilePath = "Screenshots/" + testName + ".png";
 
         try {
             // Copy the screenshot file to the destination
