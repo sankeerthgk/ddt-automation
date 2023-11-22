@@ -23,19 +23,25 @@ public class TestClass extends Base {
 
     @Test(dataProvider = "dataProvider")
     public void testSearchAddAndRemoveProduct(String searchItem, String titleLookup) {
+        //1. Go to https://www.webstaurantstore.com/
         HomePage homePage = new HomePage(driver);
         Assert.assertTrue(homePage.isLogoDisplayed(), "Logo is not displayed on Home page");
         logger.info("Verified that logo is displayed on Home page");
-        //Search of any item
+
+        //2. Search for "stainless work table".
         homePage.searchForItem(searchItem);
         SearchResultsPage searchResultsPage = new SearchResultsPage(driver);
         Assert.assertTrue(searchResultsPage.isSearchResultsDisplayed(), "Search results are not displayed");
+
+        //3. Check the search result ensuring every product has the word 'Table' in its title.
         Assert.assertTrue(searchResultsPage.checkIfAllProductsContainsTitle(titleLookup), "Not all products have Table in their title");
         logger.info("All products have the word Table in the title");
-        //Add the last product on the product page
+
+        //4. Add the last of found item on last page to Cart.
         searchResultsPage.addLastProductOnPageToCart();
         searchResultsPage.clickOnViewCartOnOverlay();
-        //Navigate on cart to move to cart
+
+        //5. Empty Cart.
         CartPage cartPage = new CartPage(driver);
         cartPage.emptyCartRemoveAllProducts();
         Assert.assertTrue(cartPage.isEmptyCartMessageDisplayed(), "Cart is not empty");
