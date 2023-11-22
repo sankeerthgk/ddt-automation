@@ -38,7 +38,7 @@ public class BasePage {
         // Check if last product has dropdown
         List<WebElement> productDropdowns = lastProduct.findElements(dropdown);
         if (!productDropdowns.isEmpty()) {
-            // Select random value from dropdown if it exists
+            // Select first value from dropdown if it exists
             selectFirstValueFromDropDown(productDropdowns.get(0));
         }
         lastProduct.findElement(addToCartButton).click();
@@ -89,7 +89,6 @@ public class BasePage {
     }
 
     public void selectFirstValueFromDropDown(WebElement dropdownElement) {
-        // Create a Select object
         Select dropdown = new Select(dropdownElement);
         // Select the first element
         dropdown.selectByIndex(1);

@@ -13,15 +13,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
+import pages.BasePage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
 public class Base {
+
+    private Logger logger = LoggerFactory.getLogger(Base.class.getName());
 
     public WebDriver driver;
     public Properties properties;
@@ -33,20 +38,27 @@ public class Base {
     public void setUp() throws IOException {
         properties = new Config().loadConfig();
         String browserName = properties.getProperty("browser");
-
-        if (browserName.equals("chrome")) {
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        } else if (browserName.equals("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
-        } else if (browserName.equals("ie")) {
-            WebDriverManager.iedriver().setup();
-            driver = new InternetExplorerDriver();
-        } else {
-            System.out.println(browserName + " is not a valid browser");
+        //Select browser based on properties
+        switch (browserName) {
+            case "chrome":
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                logger.info("Selected browser: " + browserName);
+                break;
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "ie":
+                WebDriverManager.iedriver().setup();
+                driver = new InternetExplorerDriver();
+                break;
+            default:
+                logger.info(browserName + " is not a valid browser");
+                break;
         }
         driver.manage().window().maximize();
+        //Setting up report
         initializeReport();
     }
 
