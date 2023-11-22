@@ -25,7 +25,7 @@ import java.util.Properties;
 
 public class Base {
 
-    private Logger logger = LoggerFactory.getLogger(Base.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(Base.class.getName());
 
     public WebDriver driver;
     public Properties properties;
@@ -38,6 +38,14 @@ public class Base {
         properties = new Config().loadConfig();
         String browserName = properties.getProperty("browser");
         //Select browser based on properties
+        setupBrowser(browserName);
+        driver.get(properties.getProperty("url"));
+        driver.manage().window().maximize();
+        //Setting up report
+        initializeReport();
+    }
+
+    private void setupBrowser(String browserName) {
         switch (browserName) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
@@ -56,10 +64,6 @@ public class Base {
                 logger.info(browserName + " is not a valid browser");
                 break;
         }
-        driver.get(properties.getProperty("url"));
-        driver.manage().window().maximize();
-        //Setting up report
-        initializeReport();
     }
 
     @AfterMethod

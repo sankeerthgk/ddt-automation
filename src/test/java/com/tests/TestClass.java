@@ -19,7 +19,7 @@ import java.util.List;
 
 public class TestClass extends Base {
 
-    private Logger logger = LoggerFactory.getLogger(TestClass.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(TestClass.class.getName());
 
     @Test(dataProvider = "dataProvider")
     public void testSearchAddAndRemoveProduct(String searchItem, String titleLookup) {

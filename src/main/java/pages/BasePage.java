@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BasePage {
     protected WebDriver driver;
-    private Logger logger = LoggerFactory.getLogger(BasePage.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(BasePage.class.getName());
 
     public BasePage(WebDriver driver) {
         this.driver = driver;

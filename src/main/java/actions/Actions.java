@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Actions extends BasePage {
 
-    private Logger logger = LoggerFactory.getLogger(Actions.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(Actions.class.getName());
     public Actions(WebDriver driver) {
         super(driver);
     }
@@ -22,9 +22,10 @@ public class Actions extends BasePage {
         // Traverse through each page
         logger.info("Total number of pages to traverse: " + totalPages);
         int count = 0;
+        String lookupWord = searchText.toLowerCase();
         for (int i=0; i< totalPages; i++) {
             // Perform actions on the current page
-            if (checkAllProductsContainsText(productElement, searchText.toLowerCase())) {
+            if (checkAllProductsContainsText(productElement, lookupWord)) {
                 count++;
                 logger.info("Verified that all titles have '" + searchText + "' on page " + count);
             }
@@ -38,12 +39,14 @@ public class Actions extends BasePage {
         List<WebElement> elements = driver.findElements(searchElement);
         int counter=0;
         // Check each element's title for the specified text
-        for (WebElement element : elements) {
-            String title = element.getText().toLowerCase();
-            if (title != null && title.contains(searchText)) {
-                counter++;
-            } else {
-                logger.info(searchText + " not found in product " + title);
+        if(!elements.isEmpty()) {
+            for (WebElement element : elements) {
+                String title = element.getText().toLowerCase();
+                if (title.contains(searchText)) {
+                    counter++;
+                } else {
+                    logger.info(searchText + " not found in product " + title);
+                }
             }
         }
         return counter==elements.size();
