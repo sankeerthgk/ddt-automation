@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Base Page to initialize objects for a page
+ */
 public class BasePage {
     protected WebDriver driver;
     private final Logger logger = LoggerFactory.getLogger(BasePage.class.getName());
@@ -25,12 +28,22 @@ public class BasePage {
         this.driver = driver;
     }
 
+    /**
+     * Initialize URL on any page
+     * @param URL
+     */
     public void initializeURL(String URL) {
         if (!driver.getCurrentUrl().contains(URL)) {
             driver.get(URL);
         }
     }
 
+    /**
+     * Adds last product on a page to bag
+     * @param dropdown
+     * @param productElements
+     * @param addToCartButton
+     */
     public void addLastProductToBag(By dropdown, By productElements, By addToCartButton) {
         List<WebElement> products = driver.findElements(productElements);
         WebElement lastProduct = products.get(products.size()-1);
@@ -45,25 +58,38 @@ public class BasePage {
 
     }
 
-    private static List<WebElement> hasChildElement(WebElement parentElement, By childElementLocator) {
-        return parentElement.findElements(childElementLocator);
-    }
-
+    /**
+     * Scroll to an element and click
+     * @param elementLocator
+     */
     public void scrollToElementAndClick(By elementLocator) {
         WebElement element = getElement(elementLocator);
         scrollToElement(element);
         element.click();
     }
 
+    /**
+     * Scroll to element and click
+     * @param element
+     */
     public void scrollToElementAndClick(WebElement element) {
         scrollToElement(element);
         element.click();
     }
 
+    /**
+     * Scroll to element
+     * @param element
+     */
     public void scrollToElement(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
+    /**
+     * Wait for an element to be displayed on page
+     * @param locator
+     * @param timeoutInSeconds
+     */
     public void waitForElementToBeDisplayed(By locator, int timeoutInSeconds) {
         WebElement element = getElement(locator);
         WebDriverWait wait = new WebDriverWait(driver, Duration.of(timeoutInSeconds, ChronoUnit.SECONDS));
@@ -74,6 +100,11 @@ public class BasePage {
         }
     }
 
+    /**
+     * Get webelement from locator
+     * @param locator
+     * @return
+     */
     public WebElement getElement(By locator) {
         try {
             return driver.findElement(locator);
@@ -84,10 +115,18 @@ public class BasePage {
         }
     }
 
+    /**
+     * Implicitly wait for seconds
+     * @param seconds
+     */
     public void waitForSeconds(int seconds) {
         driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
     }
 
+    /**
+     * Select the first value from a dropdown
+     * @param dropdownElement
+     */
     public void selectFirstValueFromDropDown(WebElement dropdownElement) {
         Select dropdown = new Select(dropdownElement);
         // Select the first element

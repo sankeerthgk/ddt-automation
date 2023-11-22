@@ -23,6 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Base class to initialize the tests
+ */
 public class Base {
 
     private final Logger logger = LoggerFactory.getLogger(Base.class.getName());

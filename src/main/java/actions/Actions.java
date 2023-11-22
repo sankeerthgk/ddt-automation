@@ -9,6 +9,9 @@ import pages.BasePage;
 
 import java.util.List;
 
+/**
+ * Actions class for all objects that perform actions on the page
+ */
 public class Actions extends BasePage {
 
     private final Logger logger = LoggerFactory.getLogger(Actions.class.getName());
@@ -16,6 +19,15 @@ public class Actions extends BasePage {
         super(driver);
     }
 
+    /**
+     * Loop through all the pages and check for a term in product title and return true
+     * if condition is true on all pages
+     * @param nextPageButton
+     * @param pagesElement
+     * @param productElement
+     * @param searchText
+     * @return
+     */
     public boolean iterateThroughPagesAndLookForTitle(By nextPageButton, By pagesElement, By productElement, String searchText) {
         List<WebElement> pageLinks = driver.findElements(pagesElement);
         int totalPages= Integer.parseInt(pageLinks.get(pageLinks.size()-2).getText())-1;
@@ -35,6 +47,12 @@ public class Actions extends BasePage {
         return count==pageLinks.size();
     }
 
+    /**
+     * Check if a page contains all elements have searchtext in their text
+     * @param searchElement
+     * @param searchText
+     * @return
+     */
     public boolean checkAllProductsContainsText(By searchElement, String searchText) {
         List<WebElement> elements = driver.findElements(searchElement);
         int counter=0;
